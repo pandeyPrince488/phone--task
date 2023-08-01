@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Phone Number Form</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body ng-app="phoneNumberApp" ng-controller="phoneNumberController">
+    <h2>Enter Phone Numbers</h2>
+    <form ng-submit="submitForm()">
+        <div ng-repeat="phone in phoneNumbers track by $index">
+            <input type="text" ng-model="phone.value" placeholder="Enter Phone Number">
+            <button type="button" ng-click="removePhoneNumber($index)" ng-show="phoneNumbers.length > 1">Delete</button>
+        </div>
+        <button type="button" ng-click="addPhoneNumber()">Add another phone number</button>
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        angular.module('phoneNumberApp', [])
+        .controller('phoneNumberController', function ($scope) {
+            $scope.phoneNumbers = [{ value: '' }];
+
+            $scope.addPhoneNumber = function () {
+                $scope.phoneNumbers.push({ value: '' });
+            };
+
+            $scope.removePhoneNumber = function (index) {
+                $scope.phoneNumbers.splice(index, 1);
+            };
+
+            $scope.submitForm = function () {
+                const phoneNumbersArray = [];
+                for (let i = 0; i < $scope.phoneNumbers.length; i++) {
+                    const phoneNumber = $scope.phoneNumbers[i].value.trim();
+                    if (phoneNumber !== '') {
+                        const obj = {};
+                        obj['phoneNumber' + (i + 1)] = phoneNumber;
+                        phoneNumbersArray.push(obj);
+                    }
+                }
+                console.log(phoneNumbersArray);
+            };
+        });
+    </script>
+</body>
+</html>
